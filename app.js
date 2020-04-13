@@ -21,10 +21,6 @@ new Product('bathroom', 'img/bathroom.jpg');
 new Product('boots', 'img/boots.jpg');
 new Product('breakfast', 'img/breakfast.jpg');
 
-// create an algorithm that will randomly generate three unique product images from the image directory and display them side by side
-
-let randomlyGenerateProduct = Math.floor(Math.random() * allProducts.length);
-
 // render product images to page
 // section class="images"
 
@@ -36,7 +32,7 @@ Product.prototype.render = function () {
   targetProduct.addEventListener('click', (evento) => {
     console.log(this.clickCount);
     this.clickCount++;
-  })
+  });
 
   newImg.src = this.imageSrc;
   newImg.name = this.name;
@@ -44,15 +40,22 @@ Product.prototype.render = function () {
   targetProduct.appendChild(newImg);
 };
 
-allProducts.forEach((product) => {
-  product.render();
-});
+// create an algorithm that will randomly generate three unique product images from the image directory and display them side by side
+
+let randomlyGeneratedProduct1 =
+  allProducts[Math.floor(Math.random() * allProducts.length)];
+
+let randomlyGeneratedProduct2 =
+  allProducts[Math.floor(Math.random() * allProducts.length)];
+
+let randomlyGeneratedProduct3 =
+  allProducts[Math.floor(Math.random() * allProducts.length)];
+
+randomlyGeneratedProduct1.render();
+randomlyGeneratedProduct2.render();
+randomlyGeneratedProduct3.render();
 
 // once the user clicks a product, generate three new products for the user to choose from
-
-
-
-
 
 // 2: track selections made by viewers
 
