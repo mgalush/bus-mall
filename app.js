@@ -29,7 +29,7 @@ Product.prototype.render = function () {
   let newImg = document.createElement('img');
 
   // add event listener to product images
-  targetProduct.addEventListener('click', (evento) => {
+  newImg.addEventListener('click', (evento) => {
     console.log(this.clickCount);
     this.clickCount++;
   });
@@ -40,22 +40,34 @@ Product.prototype.render = function () {
   targetProduct.appendChild(newImg);
 };
 
+// TODO: remove duplicates from list
+
 // create an algorithm that will randomly generate three unique product images from the image directory and display them side by side
 
-let randomlyGeneratedProduct1 =
-  allProducts[Math.floor(Math.random() * allProducts.length)];
+function randomlyGenerateProducts() {
+  let randomlyGeneratedProduct1 =
+    allProducts[Math.floor(Math.random() * allProducts.length)];
 
-let randomlyGeneratedProduct2 =
-  allProducts[Math.floor(Math.random() * allProducts.length)];
+  let randomlyGeneratedProduct2 =
+    allProducts[Math.floor(Math.random() * allProducts.length)];
 
-let randomlyGeneratedProduct3 =
-  allProducts[Math.floor(Math.random() * allProducts.length)];
+  let randomlyGeneratedProduct3 =
+    allProducts[Math.floor(Math.random() * allProducts.length)];
 
-randomlyGeneratedProduct1.render();
-randomlyGeneratedProduct2.render();
-randomlyGeneratedProduct3.render();
+  randomlyGeneratedProduct1.render();
+  randomlyGeneratedProduct2.render();
+  randomlyGeneratedProduct3.render();
+}
+randomlyGenerateProducts();
 
 // once the user clicks a product, generate three new products for the user to choose from
+
+let targetProduct = document.getElementById('images');
+targetProduct.addEventListener('click', (event) => {
+  targetProduct.innerHTML = '';
+  randomlyGenerateProducts();
+});
+
 
 // 2: track selections made by viewers
 
