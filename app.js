@@ -2,6 +2,7 @@
 // 1: randomly display three unique products
 // 2: track selections made by viewers
 // 3: control the number of rounds a user is presented with so that I can control the voting session duration
+// 4: show report of results after each round has concluded
 
 // create constructor function that creates an object associated with each product and has the following properties:
 //           name of product
@@ -15,6 +16,7 @@ function Product(name, imageSrc) {
   this.name = name;
   this.imageSrc = imageSrc;
   this.clickCount = 0;
+  this.isBeingConsidered = false;
 
   allProducts.push(this);
 }
@@ -27,7 +29,7 @@ Product.prototype.render = function () {
   newImg.classList.add('product');
 
   // add event listener to product images
-  newImg.addEventListener('click', (evento) => {
+  newImg.addEventListener('click', () => {
     this.clickCount++;
     console.log(this.clickCount);
   });
@@ -43,23 +45,25 @@ Product.prototype.render = function () {
   div.appendChild(newCount);
 };
 
-// TODO: remove duplicates from list
-
 // create an algorithm that will randomly generate three unique product images from the image directory and display them side by side
 
+function getRandomUniqueElementsFromArray(array) {
+  const randomIndexes = [];
+  while (randomIndexes.length < 3) {
+    let index = Math.floor(Math.random() * array.length);
+    if (randomIndexes.indexOf(index) === -1) {
+      randomIndexes.push(index);
+    }
+  }
+  return randomIndexes.map((i) => array[i]);
+}
+
 function randomlyGenerateProducts() {
-  let randomlyGeneratedProduct1 =
-    allProducts[Math.floor(Math.random() * allProducts.length)];
+  const randomProducts = getRandomUniqueElementsFromArray(allProducts, 3);
 
-  let randomlyGeneratedProduct2 =
-    allProducts[Math.floor(Math.random() * allProducts.length)];
-
-  let randomlyGeneratedProduct3 =
-    allProducts[Math.floor(Math.random() * allProducts.length)];
-
-  randomlyGeneratedProduct1.render();
-  randomlyGeneratedProduct2.render();
-  randomlyGeneratedProduct3.render();
+  randomProducts.forEach((productPotato) => {
+    productPotato.render();
+  });
 }
 
 // once the user clicks a product, generate three new products for the user to choose from
@@ -71,7 +75,7 @@ let targetProduct = document.getElementById('productContainer');
 targetProduct.addEventListener('click', productContainerClicked);
 
 function productContainerClicked() {
-  if (rounds <= 25) {
+  if (rounds < 25) {
     rounds++;
     targetProduct.innerHTML = '';
     roundCount();
@@ -87,12 +91,9 @@ function productContainerClicked() {
 function roundCount() {
   let targetCount = document.getElementById('roundCount');
   targetCount.innerText = rounds;
-};
-
-// 4: show report of results after each round has concluded
+}
 
 // create a property attached to the constructor function that keeps track of all the products that are currently being considered
-// after voting has concluded, remove the event listeners from the product
 
 // display list of all products followed by votes receive and number of times seen
 //      example: Banana Slicer had 3 votes and was shown 5 times
@@ -102,5 +103,20 @@ new Product('banana', 'img/banana.jpg');
 new Product('bathroom', 'img/bathroom.jpg');
 new Product('boots', 'img/boots.jpg');
 new Product('breakfast', 'img/breakfast.jpg');
+new Product('bubblegum', 'img/bubblegum.jpg');
+new Product('chair', 'img/chair.jpg');
+new Product('cthulhu', 'img/cthulhu.jpg');
+new Product('dog-duck', 'img/dog-duck.jpg');
+new Product('dragon', 'img/dragon.jpg');
+new Product('pen', 'img/pen.jpg');
+new Product('pet-sweep', 'img/pet-sweep.jpg');
+new Product('scissors', 'img/scissors.jpg');
+new Product('shark', 'img/shark.jpg');
+new Product('sweep', 'img/sweep.png');
+new Product('tauntaun', 'img/tauntaun.jpg');
+new Product('unicorn', 'img/unicorn.jpg');
+new Product('usb', 'img/usb.gif');
+new Product('water-can', 'img/water-can.jpg');
+new Product('wine-glass', 'img/wine-glass.jpg');
 
 randomlyGenerateProducts();
