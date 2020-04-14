@@ -19,7 +19,7 @@ function Product(name, imageSrc) {
   this.imageSrc = imageSrc;
   this.clickCount = 0;
   this.isBeingConsidered = false;
-  this.timesDisplayed = 0;
+  this.displayCount = 0;
 
   allProducts.push(this);
 }
@@ -39,10 +39,10 @@ Product.prototype.render = function () {
   newImg.src = this.imageSrc;
   newImg.name = this.name;
 
-  this.timesDisplayed++;
+  this.displayCount++;
   let newCount = document.createElement('p');
   newCount.innerText =
-    'Selected: ' + this.clickCount + '\n' + 'Displayed: ' + this.timesDisplayed;
+    'Selected: ' + this.clickCount + '\n' + 'Displayed: ' + this.displayCount;
 
   target.appendChild(div);
   div.appendChild(newImg);
@@ -78,7 +78,7 @@ let targetProduct = document.getElementById('productContainer');
 targetProduct.addEventListener('click', productContainerClicked);
 
 function productContainerClicked() {
-  if (rounds < 25) {
+  if (rounds < 10) {
     rounds++;
     targetProduct.innerHTML = '';
     roundCount();
