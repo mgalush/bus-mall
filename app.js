@@ -84,6 +84,9 @@ function productContainerClicked() {
     targetProduct.innerHTML = 'Thanks for participating!';
     console.log('thanks for participating');
     targetProduct.removeEventListener('click', productContainerClicked);
+    allProducts.forEach((productPotato) => {
+      productPotato.render();
+    });
   }
 }
 
@@ -92,11 +95,6 @@ function roundCount() {
   let targetCount = document.getElementById('roundCount');
   targetCount.innerText = rounds;
 }
-
-// create a property attached to the constructor function that keeps track of all the products that are currently being considered
-
-// display list of all products followed by votes receive and number of times seen
-//      example: Banana Slicer had 3 votes and was shown 5 times
 
 new Product('bag', 'img/bag.jpg');
 new Product('banana', 'img/banana.jpg');
