@@ -1,4 +1,6 @@
 'use strict';
+import createChart from './productChart.js';
+
 // 1: randomly display three unique products
 // 2: track selections made by viewers
 // 3: control the number of rounds a user is presented with so that I can control the voting session duration
@@ -32,7 +34,6 @@ Product.prototype.render = function () {
   // add event listener to product images
   newImg.addEventListener('click', () => {
     this.clickCount++;
-    console.log(this.clickCount);
   });
 
   newImg.src = this.imageSrc;
@@ -40,7 +41,8 @@ Product.prototype.render = function () {
 
   this.timesDisplayed++;
   let newCount = document.createElement('p');
-  newCount.innerText = 'Selected: ' + this.clickCount + '\n' + 'Displayed: ' + this.timesDisplayed;
+  newCount.innerText =
+    'Selected: ' + this.clickCount + '\n' + 'Displayed: ' + this.timesDisplayed;
 
   target.appendChild(div);
   div.appendChild(newImg);
@@ -67,7 +69,6 @@ function randomlyGenerateProducts() {
     productPotato.render();
   });
 }
-
 // once the user clicks a product, generate three new products for the user to choose from
 // store number of rounds in variable
 // show users 25 rounds of voting before ending session
@@ -84,11 +85,11 @@ function productContainerClicked() {
     randomlyGenerateProducts();
   } else {
     targetProduct.innerHTML = 'Thanks for participating!';
-    console.log('thanks for participating');
     targetProduct.removeEventListener('click', productContainerClicked);
     allProducts.forEach((productPotato) => {
       productPotato.render();
     });
+    createChart(allProducts);
   }
 }
 
