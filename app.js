@@ -3,7 +3,6 @@
 // 2: track selections made by viewers
 // 3: control the number of rounds a user is presented with so that I can control the voting session duration
 
-
 // create constructor function that creates an object associated with each product and has the following properties:
 //           name of product
 //           file path of image
@@ -24,25 +23,24 @@ function Product(name, imageSrc) {
 
 ///// div.classList.add("anotherclass");
 
-
 Product.prototype.render = function () {
   let target = document.getElementById('productContainer');
   let div = document.createElement('div');
   let newImg = document.createElement('img');
   newImg.classList.add('product');
-  
+
   // add event listener to product images
   newImg.addEventListener('click', (evento) => {
     this.clickCount++;
     console.log(this.clickCount);
   });
-  
+
   newImg.src = this.imageSrc;
   newImg.name = this.name;
-  
+
   let newCount = document.createElement('p');
   newCount.innerText = 'Score: ' + this.clickCount;
-  
+
   target.appendChild(div);
   div.appendChild(newImg);
   div.appendChild(newCount);
@@ -54,35 +52,42 @@ Product.prototype.render = function () {
 
 function randomlyGenerateProducts() {
   let randomlyGeneratedProduct1 =
-  allProducts[Math.floor(Math.random() * allProducts.length)];
-  
+    allProducts[Math.floor(Math.random() * allProducts.length)];
+
   let randomlyGeneratedProduct2 =
-  allProducts[Math.floor(Math.random() * allProducts.length)];
-  
+    allProducts[Math.floor(Math.random() * allProducts.length)];
+
   let randomlyGeneratedProduct3 =
-  allProducts[Math.floor(Math.random() * allProducts.length)];
-  
+    allProducts[Math.floor(Math.random() * allProducts.length)];
+
   randomlyGeneratedProduct1.render();
   randomlyGeneratedProduct2.render();
   randomlyGeneratedProduct3.render();
 }
 
 // once the user clicks a product, generate three new products for the user to choose from
+// store number of rounds in variable
+// show users 25 rounds of voting before ending session
 
+let rounds = 0;
 let targetProduct = document.getElementById('productContainer');
 targetProduct.addEventListener('click', (event) => {
-  targetProduct.innerHTML = '';
-  randomlyGenerateProducts();
+  if (rounds <= 25) {
+    rounds++;
+    targetProduct.innerHTML = '';
+    roundCount();
+    randomlyGenerateProducts();
+  } else {
+    targetProduct.innerHTML = 'Thanks for participating!';
+    console.log('thanks for participating');
+  }
 });
 
-
-
-
-// by default, show user 25 rounds of voting before ending session
-// store number of rounds in varaible
-
-
-
+// calculate round count
+function roundCount() {
+  let targetCount = document.getElementById('roundCount');
+  targetCount.innerText = rounds;
+};
 
 // 4: show report of results after each round has concluded
 
@@ -91,17 +96,10 @@ targetProduct.addEventListener('click', (event) => {
 // display list of all products followed by votes receive and number of times seen
 //      example: Banana Slicer had 3 votes and was shown 5 times
 
-
-
-
-
-
 new Product('bag', 'img/bag.jpg');
 new Product('banana', 'img/banana.jpg');
 new Product('bathroom', 'img/bathroom.jpg');
 new Product('boots', 'img/boots.jpg');
 new Product('breakfast', 'img/breakfast.jpg');
-
-
 
 randomlyGenerateProducts();
