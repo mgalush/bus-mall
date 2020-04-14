@@ -20,9 +20,6 @@ function Product(name, imageSrc) {
 }
 
 // render product images to page
-
-///// div.classList.add("anotherclass");
-
 Product.prototype.render = function () {
   let target = document.getElementById('productContainer');
   let div = document.createElement('div');
@@ -69,9 +66,11 @@ function randomlyGenerateProducts() {
 // store number of rounds in variable
 // show users 25 rounds of voting before ending session
 
-let rounds = 0;
+let rounds = 1;
 let targetProduct = document.getElementById('productContainer');
-targetProduct.addEventListener('click', (event) => {
+targetProduct.addEventListener('click', productContainerClicked);
+
+function productContainerClicked() {
   if (rounds <= 25) {
     rounds++;
     targetProduct.innerHTML = '';
@@ -80,8 +79,9 @@ targetProduct.addEventListener('click', (event) => {
   } else {
     targetProduct.innerHTML = 'Thanks for participating!';
     console.log('thanks for participating');
+    targetProduct.removeEventListener('click', productContainerClicked);
   }
-});
+}
 
 // calculate round count
 function roundCount() {
@@ -93,6 +93,7 @@ function roundCount() {
 
 // create a property attached to the constructor function that keeps track of all the products that are currently being considered
 // after voting has concluded, remove the event listeners from the product
+
 // display list of all products followed by votes receive and number of times seen
 //      example: Banana Slicer had 3 votes and was shown 5 times
 
