@@ -17,6 +17,7 @@ function Product(name, imageSrc) {
   this.imageSrc = imageSrc;
   this.clickCount = 0;
   this.isBeingConsidered = false;
+  this.timesDisplayed = 0;
 
   allProducts.push(this);
 }
@@ -37,8 +38,9 @@ Product.prototype.render = function () {
   newImg.src = this.imageSrc;
   newImg.name = this.name;
 
+  this.timesDisplayed++;
   let newCount = document.createElement('p');
-  newCount.innerText = 'Score: ' + this.clickCount;
+  newCount.innerText = 'Selected: ' + this.clickCount + '\n' + 'Displayed: ' + this.timesDisplayed;
 
   target.appendChild(div);
   div.appendChild(newImg);
