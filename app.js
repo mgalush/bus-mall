@@ -73,30 +73,34 @@ function randomlyGenerateProducts() {
 // store number of rounds in variable
 // show users 25 rounds of voting before ending session
 
+// calculate round count
 let rounds = 1;
+function roundCount() {
+  let targetCount = document.getElementById('roundCount');
+  if (rounds < 25) {
+    targetCount.innerText = rounds + ' of 25';
+  } else {
+  }
+}
+
 let targetProduct = document.getElementById('productContainer');
 targetProduct.addEventListener('click', productContainerClicked);
 
 function productContainerClicked() {
-  if (rounds < 10) {
+  targetProduct.innerHTML = '';
+  if (rounds < 25) {
     rounds++;
-    targetProduct.innerHTML = '';
     roundCount();
     randomlyGenerateProducts();
   } else {
-    targetProduct.innerHTML = 'Thanks for participating!';
     targetProduct.removeEventListener('click', productContainerClicked);
-    allProducts.forEach((productPotato) => {
-      productPotato.render();
-    });
+    // allProducts.forEach((productPotato) => {
+    //   productPotato.render();
+    // });
+    let targetCount = document.getElementById('roundCount');
+    targetCount.innerText = 'Thanks for participating!';
     createChart(allProducts);
   }
-}
-
-// calculate round count
-function roundCount() {
-  let targetCount = document.getElementById('roundCount');
-  targetCount.innerText = rounds;
 }
 
 new Product('bag', 'img/bag.jpg');
@@ -121,3 +125,9 @@ new Product('water-can', 'img/water-can.jpg');
 new Product('wine-glass', 'img/wine-glass.jpg');
 
 randomlyGenerateProducts();
+
+// TWO BUGS:
+// 1: three images are still rendering after final round
+// randomlyGenerateProducts is being called so 3 images are still rendering
+// do while created infinite loop????
+// 2: final round count doesn't display "thanks for participating" until after 25 but if I set the parameter to <= 25 it doesn't go all the way to 25
