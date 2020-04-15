@@ -1,4 +1,6 @@
 'use strict';
+import createChart from './productChart.js';
+
 // 1: randomly display three unique products
 // 2: track selections made by viewers
 // 3: control the number of rounds a user is presented with so that I can control the voting session duration
@@ -17,7 +19,7 @@ function Product(name, imageSrc) {
   this.imageSrc = imageSrc;
   this.clickCount = 0;
   this.isBeingConsidered = false;
-  this.timesDisplayed = 0;
+  this.displayCount = 0;
 
   allProducts.push(this);
 }
@@ -32,15 +34,15 @@ Product.prototype.render = function () {
   // add event listener to product images
   newImg.addEventListener('click', () => {
     this.clickCount++;
-    console.log(this.clickCount);
   });
 
   newImg.src = this.imageSrc;
   newImg.name = this.name;
 
-  this.timesDisplayed++;
+  this.displayCount++;
   let newCount = document.createElement('p');
-  newCount.innerText = 'Selected: ' + this.clickCount + '\n' + 'Displayed: ' + this.timesDisplayed;
+  newCount.innerText =
+    'Selected: ' + this.clickCount + '\n' + 'Displayed: ' + this.displayCount;
 
   target.appendChild(div);
   div.appendChild(newImg);
@@ -67,35 +69,38 @@ function randomlyGenerateProducts() {
     productPotato.render();
   });
 }
-
 // once the user clicks a product, generate three new products for the user to choose from
 // store number of rounds in variable
 // show users 25 rounds of voting before ending session
 
+// calculate round count
 let rounds = 1;
+function roundCount() {
+  let targetCount = document.getElementById('roundCount');
+  if (rounds < 25) {
+    targetCount.innerText = rounds + ' of 25';
+  } else {
+  }
+}
+
 let targetProduct = document.getElementById('productContainer');
 targetProduct.addEventListener('click', productContainerClicked);
 
 function productContainerClicked() {
+  targetProduct.innerHTML = '';
   if (rounds < 25) {
     rounds++;
-    targetProduct.innerHTML = '';
     roundCount();
     randomlyGenerateProducts();
   } else {
-    targetProduct.innerHTML = 'Thanks for participating!';
-    console.log('thanks for participating');
     targetProduct.removeEventListener('click', productContainerClicked);
-    allProducts.forEach((productPotato) => {
-      productPotato.render();
-    });
+    // allProducts.forEach((productPotato) => {
+    //   productPotato.render();
+    // });
+    let targetCount = document.getElementById('roundCount');
+    targetCount.innerText = 'Thanks for participating!';
+    createChart(allProducts);
   }
-}
-
-// calculate round count
-function roundCount() {
-  let targetCount = document.getElementById('roundCount');
-  targetCount.innerText = rounds;
 }
 
 new Product('bag', 'img/bag.jpg');
@@ -120,3 +125,9 @@ new Product('water-can', 'img/water-can.jpg');
 new Product('wine-glass', 'img/wine-glass.jpg');
 
 randomlyGenerateProducts();
+
+// TWO BUGS:
+// 1: three images are still rendering after final round
+// randomlyGenerateProducts is being called so 3 images are still rendering
+// do while created infinite loop????
+// 2: final round count doesn't display "thanks for participating" until after 25 but if I set the parameter to <= 25 it doesn't go all the way to 25
