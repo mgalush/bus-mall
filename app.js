@@ -73,37 +73,38 @@ function randomlyGenerateProducts() {
 // show users 25 rounds of voting before ending session
 
 // calculate round count
-let rounds = localStorage.getItem('rounds') || 0;
+let rounds = localStorage.getItem('rounds') || 1;
 
 let targetProduct = document.getElementById('productContainer');
 targetProduct.addEventListener('click', productContainerClicked);
 
 function productContainerClicked() {
+  nextRound();
+  renderRound();
+}
+
+function renderRound() {
   targetProduct.innerHTML = '';
   if (rounds < 25) {
-    rounds++;
     let targetCount = document.getElementById('roundCount');
     targetCount.innerText = rounds + ' of 25';
-    localStorage.setItem('rounds', rounds);
     randomlyGenerateProducts();
     // store allProducts in local storage
     let stringProduct = JSON.stringify(allProducts);
     localStorage.setItem('allProducts', stringProduct);
   } else {
     targetProduct.removeEventListener('click', productContainerClicked);
-    // allProducts.forEach((productPotato) => {
-    //   productPotato.render();
-    // });
     let targetCount = document.getElementById('roundCount');
     targetCount.innerText = 'Thanks for participating!';
     createChart(allProducts);
   }
 }
-// get allProductsData from local storage
-// if haveProductsFromLocalStorage
-//    loop over allProductsData
-//       new Product(p.name, p.imgSrc, p.clic, p.dispa)
-// else
+
+function nextRound() {
+  rounds++;
+  localStorage.setItem('rounds', rounds);
+}
+
 let storedAllProductsString = localStorage.getItem('allProducts');
 let parsedAllProducts = JSON.parse(storedAllProductsString);
 
@@ -141,4 +142,4 @@ if (parsedAllProducts) {
   new Product('wine-glass', 'img/wine-glass.jpg');
 }
 
-productContainerClicked();
+renderRound();
