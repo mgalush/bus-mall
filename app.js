@@ -14,12 +14,12 @@ import createChart from './productChart.js';
 
 let allProducts = [];
 
-function Product(name, imageSrc) {
+function Product(name, imageSrc, clickCount, isBeingConsidered, displayCount) {
   this.name = name;
   this.imageSrc = imageSrc;
-  this.clickCount = 0;
-  this.isBeingConsidered = false;
-  this.displayCount = 0;
+  this.clickCount = clickCount || 0;
+  this.isBeingConsidered = isBeingConsidered || false;
+  this.displayCount = displayCount || 0;
 
   allProducts.push(this);
 }
@@ -64,7 +64,6 @@ function getRandomUniqueElementsFromArray(array) {
 
 function randomlyGenerateProducts() {
   const randomProducts = getRandomUniqueElementsFromArray(allProducts, 3);
-
   randomProducts.forEach((productPotato) => {
     productPotato.render();
   });
@@ -74,14 +73,7 @@ function randomlyGenerateProducts() {
 // show users 25 rounds of voting before ending session
 
 // calculate round count
-let rounds = 1;
-function roundCount() {
-  let targetCount = document.getElementById('roundCount');
-  if (rounds < 25) {
-    targetCount.innerText = rounds + ' of 25';
-  } else {
-  }
-}
+let rounds = localStorage.getItem('rounds') || 0;
 
 let targetProduct = document.getElementById('productContainer');
 targetProduct.addEventListener('click', productContainerClicked);
@@ -90,8 +82,13 @@ function productContainerClicked() {
   targetProduct.innerHTML = '';
   if (rounds < 25) {
     rounds++;
-    roundCount();
+    let targetCount = document.getElementById('roundCount');
+    targetCount.innerText = rounds + ' of 25';
+    localStorage.setItem('rounds', rounds);
     randomlyGenerateProducts();
+    // store allProducts in local storage
+    let stringProduct = JSON.stringify(allProducts);
+    localStorage.setItem('allProducts', stringProduct);
   } else {
     targetProduct.removeEventListener('click', productContainerClicked);
     // allProducts.forEach((productPotato) => {
@@ -102,32 +99,46 @@ function productContainerClicked() {
     createChart(allProducts);
   }
 }
+// get allProductsData from local storage
+// if haveProductsFromLocalStorage
+//    loop over allProductsData
+//       new Product(p.name, p.imgSrc, p.clic, p.dispa)
+// else
+let storedAllProductsString = localStorage.getItem('allProducts');
+let parsedAllProducts = JSON.parse(storedAllProductsString);
 
-new Product('bag', 'img/bag.jpg');
-new Product('banana', 'img/banana.jpg');
-new Product('bathroom', 'img/bathroom.jpg');
-new Product('boots', 'img/boots.jpg');
-new Product('breakfast', 'img/breakfast.jpg');
-new Product('bubblegum', 'img/bubblegum.jpg');
-new Product('chair', 'img/chair.jpg');
-new Product('cthulhu', 'img/cthulhu.jpg');
-new Product('dog-duck', 'img/dog-duck.jpg');
-new Product('dragon', 'img/dragon.jpg');
-new Product('pen', 'img/pen.jpg');
-new Product('pet-sweep', 'img/pet-sweep.jpg');
-new Product('scissors', 'img/scissors.jpg');
-new Product('shark', 'img/shark.jpg');
-new Product('sweep', 'img/sweep.png');
-new Product('tauntaun', 'img/tauntaun.jpg');
-new Product('unicorn', 'img/unicorn.jpg');
-new Product('usb', 'img/usb.gif');
-new Product('water-can', 'img/water-can.jpg');
-new Product('wine-glass', 'img/wine-glass.jpg');
+if (parsedAllProducts) {
+  parsedAllProducts.forEach(
+    (productData) =>
+      new Product(
+        productData.name,
+        productData.imageSrc,
+        productData.clickCount,
+        productData.isBeingConsidered,
+        productData.displayCount
+      )
+  );
+} else {
+  new Product('bag', 'img/bag.jpg');
+  new Product('banana', 'img/banana.jpg');
+  new Product('bathroom', 'img/bathroom.jpg');
+  new Product('boots', 'img/boots.jpg');
+  new Product('breakfast', 'img/breakfast.jpg');
+  new Product('bubblegum', 'img/bubblegum.jpg');
+  new Product('chair', 'img/chair.jpg');
+  new Product('cthulhu', 'img/cthulhu.jpg');
+  new Product('dog-duck', 'img/dog-duck.jpg');
+  new Product('dragon', 'img/dragon.jpg');
+  new Product('pen', 'img/pen.jpg');
+  new Product('pet-sweep', 'img/pet-sweep.jpg');
+  new Product('scissors', 'img/scissors.jpg');
+  new Product('shark', 'img/shark.jpg');
+  new Product('sweep', 'img/sweep.png');
+  new Product('tauntaun', 'img/tauntaun.jpg');
+  new Product('unicorn', 'img/unicorn.jpg');
+  new Product('usb', 'img/usb.gif');
+  new Product('water-can', 'img/water-can.jpg');
+  new Product('wine-glass', 'img/wine-glass.jpg');
+}
 
-randomlyGenerateProducts();
-
-// TWO BUGS:
-// 1: three images are still rendering after final round
-// randomlyGenerateProducts is being called so 3 images are still rendering
-// do while created infinite loop????
-// 2: final round count doesn't display "thanks for participating" until after 25 but if I set the parameter to <= 25 it doesn't go all the way to 25
+productContainerClicked();
