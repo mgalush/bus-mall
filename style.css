@@ -2,8 +2,20 @@ body {
   text-align: center;
 }
 
+header {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  height: 50px;
+  width: 50px;
+}
+
 h1 {
-  font-size: 40px;
+  font-size: 50px;
   margin-bottom: 20px;
 }
 
@@ -13,6 +25,16 @@ h2 {
 
 h3 {
   font-size: 15px;
+}
+
+#canvasContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.chartjs-render-monitor {
+  max-height: 700px;
+  max-width: 900px;
 }
 
 #productContainer {
