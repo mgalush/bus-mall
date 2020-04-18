@@ -88,6 +88,8 @@ function productContainerClicked() {
     randomlyGenerateProducts();
   } else {
     targetProduct.removeEventListener('click', productContainerClicked);
+    let instructions = document.getElementById('instructions');
+    instructions.remove();
     let targetCount = document.getElementById('roundCount');
     targetCount.innerText = 'Thanks for participating!';
     createChart(allProducts);
